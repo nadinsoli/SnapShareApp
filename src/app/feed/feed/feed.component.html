@@ -1,18 +1,23 @@
-<div class="container">
+<div class="container" id="posts-container" class="d-flex flex-wrap">
   <div *ngFor="let post of posts$ | async" class="post">
     <div class="post-header">
       <img id="profilePicture" [src]="post.profile.profilePicture || 'default-profile-url'" alt="Profile Picture" class="profile-picture">
       <span id="username" class="username">{{ post.profile.username || 'DefaultUser' }}</span>
     </div>
-    <div class="post-body">
-      <img id="previewImage" [src]="post.imageUrl" alt="Image" class="w-100 mb-3">
-      <p>{{ post.description }}</p>
+    <div class="post-body preview">
+      <img id="previewImage" [src]="post.image" alt="Image" class="w-100 mb-3">
     </div>
     <div class="post-footer">
-      <button (click)="toggleLike(post.id)" class="like-button" [ngClass]="post.isLiked ? 'filled-heart' : 'empty-heart'">
-        {{ post.isLiked ? 'Unlike' : 'Like' }}
-      </button>
+      <div class="like-section">
       <span>{{ post.likes }} likes</span>
+      <button (click)="toggleLike(post.id)" class="like-button" [ngClass]="post.isLiked ? 'filled-heart' : 'empty-heart'">
+        <!-- {{ post.isLiked ? 'Unlike' : 'Like' }}  -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+        </svg>
+      </button>
+      </div>
+      <p>{{ post.description }}</p>
     </div>
   </div>
 </div>

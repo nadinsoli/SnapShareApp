@@ -14,10 +14,10 @@ export class CreatePostComponent {
 
   addPost(postForm: NgForm) {
     if (postForm.valid) {
-      const { imageUrl, description } = postForm.value;
+      const { image, description } = postForm.value;
       const newPost = {
         id: '',
-        imageUrl,
+        image,
         description,
         likes: 0,
         isLiked: false,
