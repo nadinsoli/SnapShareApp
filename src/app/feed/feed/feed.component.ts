@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { FetchPosts, ToggleLike } from '../../state/posts.actions';
-import { tap, catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { Post } from '../../models/post.model';
 
 @Component({
   selector: 'app-feed',
@@ -11,16 +10,16 @@ import { tap, catchError } from 'rxjs/operators';
   styleUrls: ['./feed.component.css']
 })
 export class FeedComponent implements OnInit {
-  posts$: Observable<any[]> = of([]);
+  posts$!: Observable<Post[]>;
 
-  constructor(private http: HttpClient, private store: Store) {}
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.store.dispatch(new FetchPosts());
     this.posts$ = this.store.select(state => state.posts.posts);
   }
 
-  toggleLike(post: any) {
-    this.store.dispatch(new ToggleLike(post.id));
+  toggleLike(postId: string) {
+    this.store.dispatch(new ToggleLike(postId));
   }
 }

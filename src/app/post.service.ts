@@ -20,7 +20,7 @@ export class PostService {
     return this.http.post<Post>(this.apiUrl, post);
   }
 
-  toggleLike(post: Post): Observable<Post> {
+  updatePost(post: Post): Observable<Post> {
     return this.http.put<Post>(`${this.apiUrl}/${post.id}`, post);
   }
 }
