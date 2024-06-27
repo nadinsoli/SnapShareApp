@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
+import { FetchPosts, ToggleLike } from '../../state/posts.actions';
+import { tap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-feed',
@@ -11,20 +13,14 @@ import { catchError, tap } from 'rxjs/operators';
 export class FeedComponent implements OnInit {
   posts$: Observable<any[]> = of([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private store: Store) {}
 
   ngOnInit(): void {
-    this.posts$ = this.http.get<any[]>('https://666ffbc40900b5f87248e993.mockapi.io/posts')
-      .pipe(
-        tap(data => console.log('Fetched posts', data)),
-        catchError(error => {
-          console.error('Error fetching posts', error);
-          return [];
-        })
-      );
+    this.store.dispatch(new FetchPosts());
+    this.posts$ = this.store.select(state => state.posts.posts);
   }
 
-  toggleLike(postId: string) {
-    console.log('Toggle like for post:', postId);
+  toggleLike(post: any) {
+    this.store.dispatch(new ToggleLike(post.id));
   }
 }

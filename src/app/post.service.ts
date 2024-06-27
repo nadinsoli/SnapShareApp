@@ -19,4 +19,8 @@ export class PostService {
   addPost(post: Post): Observable<Post> {
     return this.http.post<Post>(this.apiUrl, post);
   }
+
+  toggleLike(post: Post): Observable<Post> {
+    return this.http.put<Post>(`${this.apiUrl}/${post.id}`, post);
+  }
 }

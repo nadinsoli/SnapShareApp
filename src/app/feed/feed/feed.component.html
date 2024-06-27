@@ -9,13 +9,12 @@
     </div>
     <div class="post-footer">
       <div class="like-section">
-      <span>{{ post.likes }} likes</span>
-      <button (click)="toggleLike(post.id)" class="like-button" [ngClass]="post.isLiked ? 'filled-heart' : 'empty-heart'">
-        <!-- {{ post.isLiked ? 'Unlike' : 'Like' }}  -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
-        </svg>
-      </button>
+        <span>{{ post.likes }} likes</span>
+        <button (click)="toggleLike(post)" class="like-button" [ngClass]="post.isLiked ? 'filled-heart' : 'empty-heart'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+          </svg>
+        </button>
       </div>
       <p>{{ post.description }}</p>
     </div>

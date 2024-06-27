@@ -1,22 +1,9 @@
-import { State, Action, StateContext } from '@ngxs/store';
+import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { Post } from '../models/post.model';
 import { PostService } from '../post.service';
+import { FetchPosts, AddPost, ToggleLike } from './posts.actions';
 import { tap } from 'rxjs/operators';
-
-export class FetchPosts {
-  static readonly type = '[Posts] Fetch Posts';
-}
-
-export class AddPost {
-  static readonly type = '[Posts] Add Post';
-  constructor(public payload: Post) {}
-}
-
-export class ToggleLike {
-  static readonly type = '[Posts] Toggle Like';
-  constructor(public payload: string) {}
-}
 
 export interface PostsStateModel {
   posts: Post[];
@@ -32,6 +19,11 @@ export interface PostsStateModel {
 export class PostsState {
 
   constructor(private postService: PostService) {}
+
+  @Selector()
+  static getPosts(state: PostsStateModel) {
+    return state.posts;
+  }
 
   @Action(FetchPosts)
   fetchPosts(ctx: StateContext<PostsStateModel>) {
@@ -60,17 +52,20 @@ export class PostsState {
     const { posts } = ctx.getState();
     const postId = action.payload;
 
-    const updatedPosts = posts.map(post =>
-      post.id === postId ? { ...post, isLiked: !post.isLiked } : post
-    );
+    const updatedPosts = posts.map(post => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          isLiked: !post.isLiked,
+          likes: post.isLiked ? post.likes - 1 : post.likes + 1
+        };
+      }
+      return post;
+    });
 
     ctx.setState({
       ...ctx.getState(),
       posts: updatedPosts
     });
-  }
-
-  static getPosts(state: PostsStateModel) {
-    return state.posts;
   }
 }
