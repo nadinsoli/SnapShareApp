@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { AddPost } from '../../state/posts.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-post',
@@ -10,7 +11,7 @@ import { AddPost } from '../../state/posts.actions';
 })
 export class CreatePostComponent {
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private router: Router) {}
 
   addPost(postForm: NgForm) {
     if (postForm.valid) {
@@ -26,8 +27,10 @@ export class CreatePostComponent {
           profilePicture: 'profilePicture'
         }
       };
-      this.store.dispatch(new AddPost(newPost));
-      postForm.resetForm();
+      this.store.dispatch(new AddPost(newPost)).subscribe(() => {
+        postForm.resetForm();
+        this.router.navigate(['/feed']);
+      });
     }
   }
 }
